@@ -25,3 +25,15 @@ Cat.create!(
   sex: "M",
   color: "black"
 )
+
+CatRentalRequest.create!(
+  cat_id: 1,
+  start_date: 5.years.ago,
+  end_date: Date.current
+)
+
+CatRentalRequest.create!(
+  cat_id: 1,
+  start_date: 1.years.ago,
+  end_date: Date.current
+)

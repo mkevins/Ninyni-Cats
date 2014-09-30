@@ -15,6 +15,8 @@ class Cat < ActiveRecord::Base
   validate :birth_date_not_too_late
   validates :color, inclusion: { in: COLORS }
   #decided against this: validates :sex, inclusion: { in: w%{ M F }}
+  has_many :cat_rental_requests,
+    dependent: :destroy
 
   def age
     (Time.now - birth_date).year # test this
