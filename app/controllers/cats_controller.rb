@@ -5,7 +5,8 @@ class CatsController < ApplicationController
   end
 
   def show
-    render json: Cat.find(params[:id])
+    @cat = Cat.find(params[:id])
+    render :show
   end
 
   private
