@@ -1,0 +1,18 @@
+<h1><%= @cat.name %></h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Color</th>
+    <th>Birthdate</th>
+    <th>Sex</th>
+  </tr>
+  <tr>
+    <td><%= @cat.name  %></td>
+    <td><%= @cat.color  %></td>
+    <td><%= @cat.birth_date ? @cat.birth_date : "Unknown"  %></td>
+    <td>None of your business.</td>
+  </tr>
+</table>
+
+<a href="<%= cats_url %>">Return to index</a>
