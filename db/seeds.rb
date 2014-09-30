@@ -17,7 +17,7 @@ Cat.create!(
   name: "Spotty Thorpe",
   sex: "M",
   color: "blue",
-  birth_date: 18.years.ago
+  birth_date: 5.years.ago
 )
 
 Cat.create!(
