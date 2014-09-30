@@ -6,6 +6,14 @@ class CatRentalRequest < ActiveRecord::Base
 
   after_initialize { self.status ||= "PENDING" }
 
+  def approve!
+    self.update!(status: "APPROVED")
+  end
+
+  def deny!
+    self.destroy
+  end
+
   private
 
   def no_overlapping_approved_requests
