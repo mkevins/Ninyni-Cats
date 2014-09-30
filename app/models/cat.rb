@@ -1,15 +1,15 @@
 class Cat < ActiveRecord::Base
-  COLORS = [
-    "red",
-    "cream",
-    "chocolate",
-    "lilac",
-    "cinnamon",
-    "fawn",
-    "white",
-    "black",
-    "blue"
-  ]
+  COLORS = %w(
+    red
+    cream
+    chocolate
+    lilac
+    cinnamon
+    fawn
+    white
+    black
+    blue
+  )
 
   validates :name, :sex, :color, presence: true
   validate :birth_date_not_too_late
@@ -24,10 +24,13 @@ class Cat < ActiveRecord::Base
 
   def birth_date_not_too_late
     return if birth_date.nil?
-    validates_date(
-      :birth_date,
-      timeliness: {on_or_before: -> { Date.current }}
-    )
+    if birth_date > Date.current
+      errors[:cat] << "No"
+    end
+    # validates(
+    #   :birth_date,
+    #   timeliness: {on_or_before: -> { Date.current }, type: :date}
+    # )
   end
 
 end

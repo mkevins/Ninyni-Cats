@@ -6,12 +6,14 @@
     <th>Color</th>
     <th>Birthdate</th>
     <th>Sex</th>
+    <th>Description</th>
   </tr>
   <tr>
     <td><%= @cat.name  %></td>
     <td><%= @cat.color  %></td>
     <td><%= @cat.birth_date ? @cat.birth_date : "Unknown"  %></td>
     <td>None of your business.</td>
+    <td><%= @cat.description %></td>
   </tr>
 </table>
 
