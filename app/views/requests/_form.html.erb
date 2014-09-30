@@ -1,0 +1,37 @@
+<% editing = request.persisted? %>
+<% action_url = editing ? request_url(request) : requests_url %>
+
+
+<form action="<%= action_url %>" method="post">
+  <% if editing %>
+    <input type="hidden" name="_method" value="put">
+  <% end %>
+
+  <label for="cat">Cat</label>
+  <select id="cat" name="request[cat_id]">
+    <option<%= ' selected' unless request.cat %>>Select a cat</option>
+
+    <% Cat.all.each do |cat| %>
+    <option value="<%= cat.id %>"<%= ' selected' if request.cat == cat %>>
+      <%= cat.name %>
+    </option>
+    <% end %>
+  </select>
+  <br>
+
+  <label for="start_date">Start Date</label>
+  <input
+    type="date"
+    id="start_date"
+    name="request[start_date]" value="<%= request.start_date %>">
+  <br>
+
+  <label for="end_date">End Date</label>
+  <input
+    type="date"
+    id="end_date"
+    name="request[end_date]" value="<%= request.end_date %>">
+  <br>
+
+  <input type="submit" value="ASK JUST ASK AND THOU SHALT RECEIVE or suhn-uhn.">
+</form>
