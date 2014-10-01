@@ -19,6 +19,10 @@ class Cat < ActiveRecord::Base
     class_name: "CatRentalRequest",
     dependent: :destroy
 
+  belongs_to :owner,
+    class_name: "User",
+    foreign_key: :user_id
+
   def age
     (Time.now - birth_date).year # test this
   end

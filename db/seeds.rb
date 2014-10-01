@@ -10,20 +10,23 @@ Cat.create!(
   name: "Lucifer Sam",
   sex: "F",
   color: "black",
-  birth_date: 18.years.ago
+  birth_date: 18.years.ago,
+  user_id: 1
 )
 
 Cat.create!(
   name: "Spotty Thorpe",
   sex: "M",
   color: "blue",
-  birth_date: 5.years.ago
+  birth_date: 5.years.ago,
+  user_id: 2
 )
 
 Cat.create!(
   name: "Bartholomew",
   sex: "M",
-  color: "black"
+  color: "black",
+  user_id: 2
 )
 
 CatRentalRequest.create!(
@@ -53,4 +56,14 @@ CatRentalRequest.create!(
 User.new(
   user_name: "mmmmmmmkevins",
   password: "my_57upid_p455w0rd"
+).save!
+
+User.new(
+  user_name: "kc",
+  password: "hi"
+).save!
+
+User.new(
+  user_name: "lousy_person",
+  password: "password"
 ).save!
