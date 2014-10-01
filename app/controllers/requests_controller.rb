@@ -19,6 +19,22 @@ class RequestsController < ApplicationController
     render :index
   end
 
+  def approve
+    @request = CatRentalRequest.find(params[:request_id])
+    @request.approve!
+    redirect_to cat_url(@request.cat)
+  end
+
+  def deny
+    @request = CatRentalRequest.find(params[:request_id])
+    @request.deny!
+    redirect_to cat_url(@request.cat)
+  end
+
+  # def show
+  #   @request = CatRental
+  #   render :index
+  # end
   # def edit
   #   @cat = Cat.find(params[:id])
   #   render :edit

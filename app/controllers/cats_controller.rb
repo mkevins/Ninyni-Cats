@@ -1,4 +1,6 @@
 class CatsController < ApplicationController
+  before_action :require_current_user!
+
   def index
     @cats = Cat.all
     render :index

@@ -1,8 +1,15 @@
 <% editing = cat.persisted? %>
 <% action_url = editing ? cat_url(cat) : cats_url %>
 
+<%# flash[:errors].each do |error| %>
+<%#= error %>
+<%# end %>
 
 <form action="<%= action_url %>" method="post">
+  <input
+     name="authenticity_token"
+     type="hidden"
+     value="<%= form_authenticity_token %>">
   <% if editing %>
     <input type="hidden" name="_method" value="put">
   <% end %>
