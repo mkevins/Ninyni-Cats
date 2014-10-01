@@ -1,46 +1,53 @@
 class CatRentalRequest < ActiveRecord::Base
   validates :cat_id, :start_date, :end_date, :status, presence: true
-  validate :no_overlapping_approved_requests
+  validate :no_overlapping_approved_requests_unless_denied
 
   belongs_to :cat
 
   after_initialize { self.status ||= "PENDING" }
 
+  def approve
+    self.approve!
+    true
+  rescue
+    false
+  end
+
   def approve!
-    self.update!(status: "APPROVED")
+    CatRentalRequest.transaction do
+      self.update!(status: "APPROVED")
+      # fail
+      overlapping_requests.each { |overlapper| overlapper.deny! }
+    end
   end
 
   def deny!
-    self.destroy
+    self.update!(status: "DENIED")
   end
 
   private
 
-  def no_overlapping_approved_requests
-    unless overlapping_approved_requests.empty?
-      errors[:cat_rental_request] << 'overlapping cat rental request'
+  def no_overlapping_approved_requests_unless_denied
+    if !overlapping_approved_requests.empty?
+      if status == "PENDING" || status == "APPROVED"
+        errors[:cat_rental_request] << 'overlapping cat rental request'
+      end
     end
   end
 
   def overlapping_requests
     where_string = <<-SQL
-        :start_date BETWEEN
-          cat_rental_requests.start_date
-          AND cat_rental_requests.end_date
+    (
+        :start_date BETWEEN start_date AND end_date
       OR
-        :end_date BETWEEN
-          cat_rental_requests.start_date
-          AND cat_rental_requests.end_date
+        :end_date BETWEEN start_date AND end_date
       OR
-        cat_rental_requests.start_date BETWEEN
-          :start_date
-          AND :end_date
+        start_date BETWEEN :start_date AND :end_date
       OR
-        cat_rental_requests.end_date BETWEEN
-          :start_date
-          AND :end_date
-      AND
-        cat_rental_requests.id != :id
+        end_date BETWEEN :start_date AND :end_date
+    )
+    AND
+      cat_rental_requests.id != :id
     SQL
 
     where_string
@@ -49,8 +56,7 @@ class CatRentalRequest < ActiveRecord::Base
         id: self.id,
         start_date: self.start_date,
         end_date: self.end_date
-      )    # will return duplicates
-
+      )
   end
 
   def overlapping_approved_requests

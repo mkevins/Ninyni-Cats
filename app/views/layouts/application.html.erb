@@ -5,8 +5,34 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <% if current_user %>
+  <h1>Welcome awesome <span
+    style="text-shadow: 5px 5px 5px;"><%= current_user.user_name %>
+    </span>
+    <br>
+    <form
+      method="post"
+      action="<%= destroy_session_url %>">
+      <input
+         name="authenticity_token"
+         type="hidden"
+         value="<%= form_authenticity_token %>">
+      <input
+        name="_method"
+        value="delete"
+        type="hidden">
+      <input value="Sign Out" type="submit">
+    </form>
+  </h1>
+  <% else %>
+  <h1><a href="<%= new_session_url %>">Sign up or log in</a></h1>
+  <% end %>
+
+  <%= flash[:message] %>
 
 <%= yield %>
+
+  <%= flash[:errors].try(:each) { |error| error } %>
 
 </body>
 </html>
