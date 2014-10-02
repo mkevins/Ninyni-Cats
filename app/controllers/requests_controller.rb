@@ -1,4 +1,7 @@
 class RequestsController < ApplicationController
+  before_action :only_owner_can_access, only: [:approve, :deny]
+  before_action :owner_cannot_rent_own_cat, only: [:new, :create]
+
   def new
     @request = CatRentalRequest.new
     render :new
@@ -6,6 +9,7 @@ class RequestsController < ApplicationController
 
   def create
     @request = CatRentalRequest.new(request_params)
+    @request.user_id = current_user.id
     if @request.save
       redirect_to cat_url(@request.cat)
     else
@@ -51,6 +55,16 @@ class RequestsController < ApplicationController
   # end
 
   private
+
+  def only_owner_can_access
+    @cat = CatRentalRequest.find(params[:request_id]).cat   # DRY?
+    redirect_to cat_url(@cat) unless @cat.user_id == current_user.id
+  end
+
+  def owner_cannot_rent_own_cat
+    @cat = Cat.find(params[:cat_id])   # DRY?
+    redirect_to cat_url(@cat) if @cat.user_id == current_user.id
+  end
 
   def request_params
     params.require(:request).permit(:cat_id, :start_date, :end_date)

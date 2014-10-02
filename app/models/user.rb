@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
 
   has_many :cats,
     dependent: :destroy
+  has_many :requests,
+    class_name: "CatRentalRequest",
+    foreign_key: :user_id
 
   def self.find_by_credentials(user_name, password)
     user = User.find_by_user_name(user_name)

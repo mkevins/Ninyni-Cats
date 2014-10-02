@@ -1,0 +1,19 @@
+<% if request_type == :approve %>
+  <% action_url = request_approve_url(request) %>
+<% elsif request_type == :deny %>
+  <% action_url = request_deny_url(request) %>
+<% end %>
+
+<form
+  method="post"
+  action="<%= action_url %>">
+  <input
+     name="authenticity_token"
+     type="hidden"
+     value="<%= form_authenticity_token %>">
+  <input
+    name="_method"
+    value="<%= request_type %>"
+    type="hidden">
+  <input value="<%= request_type.to_s.capitalize %>" type="submit">
+</form>

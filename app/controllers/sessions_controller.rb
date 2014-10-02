@@ -13,6 +13,7 @@ class SessionsController < ApplicationController
       login_user!
     else
       @user = User.new
+      @user.user_name = user_params[:user_name]
       render :new
     end
   end

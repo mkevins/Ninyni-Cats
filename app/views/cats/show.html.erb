@@ -18,50 +18,30 @@
 </table>
 <br>
 
-<table>
-  <tr>
-    <th>Start Date</th>
-    <th>End Date</th>
-    <th>Status</th>
-  </tr>
-  <% @cat.requests.order(:start_date).each do |request| %>
-  <tr>
-    <td><%= request.start_date %></td>
-    <td><%= request.end_date %></td>
-    <td><%= request.status %>
-      <% if request.status == "PENDING" %>
-        <form
-          method="post"
-          action="<%= request_approve_url(request) %>">
-          <input
-             name="authenticity_token"
-             type="hidden"
-             value="<%= form_authenticity_token %>">
-          <input
-            name="_method"
-            value="patch"
-            type="hidden">
-          <input value="Approve" type="submit">
-        </form>
-      <% end %>
-      <% unless request.status == "DENIED" %>
-        <form
-          method="post"
-          action="<%= request_deny_url(request) %>">
-          <input
-             name="authenticity_token"
-             type="hidden"
-             value="<%= form_authenticity_token %>">
-          <input
-            name="_method"
-            value="patch"
-            type="hidden">
-          <input value="Deny" type="submit">
-        </form>
-      <% end %>
-  </tr>
-  <% end %>
-</table>
+<% if @cat.owner == current_user %>
+  <table>
+    <tr>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Status</th>
+    </tr>
+    <% @cat.requests.order(:start_date).each do |request| %>
+    <tr>
+      <td><%= request.start_date %></td>
+      <td><%= request.end_date %></td>
+      <td><%= request.status %>
+        <% if request.status == "PENDING" %>
+        <%= render partial: 'button',
+            locals: {request_type: :approve, request: request} %>
+        <% end %>
+        <% unless request.status == "DENIED" %>
+        <%= render partial: 'button',
+            locals: {request_type: :deny, request: request} %>
+        <% end %>
+    </tr>
+    <% end %>
+  </table>
+<% end %>
 <br>
 
 <a href="<%= cats_url %>">Return to index</a>

@@ -2,11 +2,12 @@
 <html>
 <head>
   <title>NinyniCats</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
   <% if current_user %>
-  <h1>Welcome awesome <span
+  <h2>Welcome awesome <span
     style="text-shadow: 5px 5px 5px;"><%= current_user.user_name %>
     </span>
     <br>
@@ -23,16 +24,51 @@
         type="hidden">
       <input value="Sign Out" type="submit">
     </form>
-  </h1>
+  </h2>
+
+  <%= yield %>
+
   <% else %>
-  <h1><a href="<%= new_session_url %>">Sign up or log in</a></h1>
+
+    <%= flash[:message] %>
+    <%= flash[:errors].try(:each) { |error| error } %>
+
+    <%= yield %>
+    <table>
+      <tr>
+        <td>
+          <form
+            method="post"
+            action="<%= new_user_url %>">
+            <input
+               name="authenticity_token"
+               type="hidden"
+               value="<%= form_authenticity_token %>">
+             <input
+               name="_method"
+               value="get"
+               type="hidden">
+              <input value="Sign up" type="submit">
+          </form>
+        </td>
+        <td>or</td>
+        <td>
+          <form
+            method="post"
+            action="<%= new_session_url %>">
+            <input
+              name="_method"
+              value="get"
+              type="hidden">
+            <input
+               name="authenticity_token"
+               type="hidden"
+               value="<%= form_authenticity_token %>">
+            <input value="log in" type="submit">
+          </form>
+        </td>
+      </tr>
+    </table>
   <% end %>
-
-  <%= flash[:message] %>
-
-<%= yield %>
-
-  <%= flash[:errors].try(:each) { |error| error } %>
-
 </body>
 </html>
