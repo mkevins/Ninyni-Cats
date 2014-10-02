@@ -1,6 +1,6 @@
 class CatsController < ApplicationController
   before_action :require_current_user!
-  before_action :maybe_redirect?, only: [:create, :edit]
+  before_action :maybe_redirect?, only: [:edit, :update]
 
   def index
     @cats = Cat.all

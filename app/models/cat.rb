@@ -32,7 +32,7 @@ class Cat < ActiveRecord::Base
   def birth_date_not_too_late
     return if birth_date.nil?
     if birth_date > Date.current
-      errors[:cat] << "No"
+      errors[:cat] << "Impossible birth date"
     end
     # validates(
     #   :birth_date,
