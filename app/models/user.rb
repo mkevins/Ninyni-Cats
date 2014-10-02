@@ -4,8 +4,8 @@ class User < ActiveRecord::Base
   validates :user_name, :session_token, uniqueness: true
   after_initialize :ensure_session_token
 
-  has_many :cats,
-    dependent: :destroy
+  has_many :cats, dependent: :destroy
+  has_many :requests, dependent: :destroy
 
   def self.find_by_credentials(user_name, password)
     user = User.find_by_user_name(user_name)

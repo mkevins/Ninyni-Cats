@@ -31,24 +31,28 @@ Cat.create!(
 
 CatRentalRequest.create!(
   cat_id: 1,
+  user_id: 1,
   start_date: 5.years.ago,
   end_date: Date.current
 )
 
 CatRentalRequest.create!(
   cat_id: 1,
+  user_id: 2,
   start_date: 1.years.ago,
   end_date: 1.years.from_now
 )
 
 CatRentalRequest.create!(
   cat_id: 1,
+  user_id: 2,
   start_date: 18.months.from_now,
   end_date: 2.years.from_now
 )
 
 CatRentalRequest.create!(
   cat_id: 1,
+  user_id: 1,
   start_date: 3.years.from_now,
   end_date: 4.years.from_now
 )

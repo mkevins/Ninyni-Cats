@@ -2,10 +2,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :current_user
 
-  def redirect_current_user!
-    redirect_to cats_url if current_user
-  end
-
   def require_current_user!
     redirect_to new_session_url if current_user.nil?
   end

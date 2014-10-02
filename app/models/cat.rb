@@ -11,7 +11,7 @@ class Cat < ActiveRecord::Base
     blue
   )
 
-  validates :name, :sex, :color, presence: true
+  validates :name, :sex, :color, :user_id, presence: true
   validate :birth_date_not_too_late
   validates :color, inclusion: { in: COLORS }
   #decided against this: validates :sex, inclusion: { in: w%{ M F }}

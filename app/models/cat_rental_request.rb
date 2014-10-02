@@ -1,8 +1,20 @@
 class CatRentalRequest < ActiveRecord::Base
-  validates :cat_id, :start_date, :end_date, :status, presence: true
+  validates(
+    :cat_id,
+    :start_date,
+    :end_date,
+    :status,
+    :user_id,
+    presence: true
+  )
   validate :no_overlapping_approved_requests_unless_denied
 
   belongs_to :cat
+  belongs_to :owner, class_name: "User", foreign_key: :user_id
+
+  def owner_name
+    self.owner.user_name
+  end
 
   after_initialize { self.status ||= "PENDING" }
 

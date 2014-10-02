@@ -1,5 +1,6 @@
 class CatsController < ApplicationController
   before_action :require_current_user!
+  before_action :maybe_redirect?, only: [:create, :edit]
 
   def index
     @cats = Cat.all
@@ -17,7 +18,9 @@ class CatsController < ApplicationController
   end
 
   def create
-    @cat = Cat.new(cat_params)
+    @cat = Cat.new(cat_params) # is this needed anymore?
+    @cat.user_id = current_user.id
+
     if @cat.save
       redirect_to cat_url(@cat)
     else
@@ -27,7 +30,7 @@ class CatsController < ApplicationController
   end
 
   def edit
-    @cat = Cat.find(params[:id])
+    @cat = Cat.find(params[:id]) # is this needed anymore?
     render :edit
   end
 
@@ -42,6 +45,14 @@ class CatsController < ApplicationController
   end
 
   private
+
+  def maybe_redirect?
+    @cat = Cat.find(params[:id])
+    unless @cat.user_id == current_user.id
+      flash[:errors] = ["You don't have that permission."]
+      redirect_to cats_url
+    end
+  end
 
   def cat_params
     params.require(:cat).permit(:name, :birth_date, :color, :sex, :description)

@@ -1,4 +1,7 @@
 class RequestsController < ApplicationController
+
+  before_action :maybe_redirect?
+
   def new
     @request = CatRentalRequest.new
     render :new
@@ -6,6 +9,7 @@ class RequestsController < ApplicationController
 
   def create
     @request = CatRentalRequest.new(request_params)
+    @request.user_id = current_user.id
     if @request.save
       redirect_to cat_url(@request.cat)
     else
@@ -51,6 +55,14 @@ class RequestsController < ApplicationController
   # end
 
   private
+
+  def maybe_redirect?
+    @request = CatRentalRequest.new
+    unless @request.user_id == current_user.id
+      flash[:errors] = ["You don't have that permission."]
+      redirect_to cats_url
+    end
+  end
 
   def request_params
     params.require(:request).permit(:cat_id, :start_date, :end_date)
